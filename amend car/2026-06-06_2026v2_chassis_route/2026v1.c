@@ -94,22 +94,58 @@ static char trace_go_to_tag(const char *stage, double targetX, double targetY, d
     return ok;
 }
 
-static void run_baseline_stage_1(void)
+static double route_limited_speed(double speed, double limit)
+{
+    if (speed > limit)
+        return limit;
+    if (speed < -limit)
+        return -limit;
+    return speed;
+}
+
+static char route_go(double speed, double distance, char direction)
+{
+    char ok = go_bmp(route_limited_speed(speed, ROBOT_ROUTE_MAX_SPEED), distance, direction);
+    speed_control(0, 0);
+    SetWaitForTime(ROBOT_ROUTE_SETTLE_SEC);
+    return ok;
+}
+
+static char route_turn(double angle, double left_speed, double right_speed)
+{
+    char ok = turn_o(angle,
+                     route_limited_speed(left_speed, ROBOT_ROUTE_TURN_SPEED_LIMIT),
+                     route_limited_speed(right_speed, ROBOT_ROUTE_TURN_SPEED_LIMIT));
+    speed_control(0, 0);
+    SetWaitForTime(ROBOT_ROUTE_SETTLE_SEC);
+    return ok;
+}
+
+static char route_fail(const char *stage)
+{
+    speed_control(0, 0);
+    SetDisplayString(7, stage, 0xF800, 0x0000);
+    SetDisplayString(8, "ROUTE FAIL", 0xF800, 0x0000);
+    return 0;
+}
+
+static char run_baseline_stage_1(void)
 {
     SetDisplayString(7, "STAGE 1", 0xFFE0, 0x0000);
-    go_bmp(-40, 53, 2);
+    route_go(-40, 53, 2);
     SetWaitForTime(0.2);
 
     go_times(-30, 1, 1);
     SetWaitForTime(0.2);
 
-    go_bmp(40, 1.5, 1);
+    route_go(40, 1.5, 1);
     SetWaitForTime(0.2);
 
-    trace_go_to_tag("TAG A1", 180, 100, 0, 12000, 0);
+    if (!trace_go_to_tag("TAG A1", 180, 100, 0, 12000, 0))
+        return route_fail("A1 TAG FAIL");
     SetWaitForTime(0.5);
 
-    go_bmp(30, 7, 1);
+    route_go(30, 7, 1);
     SetWaitForTime(0.2);
 
     kinematic(0, 190, -10, 1000);
@@ -117,7 +153,7 @@ static void run_baseline_stage_1(void)
     SetWaitForTime(0.2);
 
     kinematic(0, 150, 50, 1000);
-    go_bmp(30, 5.5, 1);
+    route_go(30, 5.5, 1);
     SetWaitForTime(0.2);
 
     set_back(1680, 2000, 1650);
@@ -127,24 +163,26 @@ static void run_baseline_stage_1(void)
     SetWaitForTime(0.2);
 
     kinematic(0, 120, 30, 2000);
+    return 1;
 }
 
-static void run_baseline_stage_2(void)
+static char run_baseline_stage_2(void)
 {
     SetDisplayString(7, "STAGE 2", 0xFFE0, 0x0000);
-    go_bmp(-40, 68, 2);
+    route_go(-40, 68, 2);
     SetWaitForTime(0.2);
-    go_bmp(40, 39, 1);
+    route_go(40, 39, 1);
     SetWaitForTime(0.2);
-    go_bmp(40, 48, 2);
+    route_go(40, 48, 2);
     SetWaitForTime(0.2);
-    go_bmp(-30, 6, 1);
-    SetWaitForTime(0.2);
-
-    trace_go_to_tag("TAG A2", 210, 80, 358, 12000, 0);
+    route_go(-30, 6, 1);
     SetWaitForTime(0.2);
 
-    go_bmp(30, 5, 1);
+    if (!trace_go_to_tag("TAG A2", 210, 80, 358, 12000, 0))
+        return route_fail("A2 TAG FAIL");
+    SetWaitForTime(0.2);
+
+    route_go(30, 5, 1);
     SetWaitForTime(0.2);
 
     kinematic(0, 230, -10, 1000);
@@ -154,35 +192,37 @@ static void run_baseline_stage_2(void)
     kinematic(0, 110, 30, 2000);
     SetWaitForTime(0.2);
 
-    go_bmp(-40, 53, 2);
+    route_go(-40, 53, 2);
     SetWaitForTime(0.2);
 
-    turn_o(9.5, -40, 40);
+    route_turn(9.5, -40, 40);
     SetWaitForTime(0.2);
 
-    go_bmp(40, 108, 1);
+    route_go(40, 108, 1);
     SetWaitForTime(0.2);
 
-    go_bmp(40, 66, 2);
+    route_go(40, 66, 2);
     SetWaitForTime(0.3);
 
-    turn_o(180, -40, 40);
+    route_turn(180, -40, 40);
     SetWaitForTime(0.3);
 
-    go_bmp(-30, 16, 2);
+    route_go(-30, 16, 2);
     SetWaitForTime(0.3);
 
-    go_bmp(-30, 10, 1);
+    route_go(-30, 10, 1);
     SetWaitForTime(1);
 
-    trace_go_to_tag("TAG A3", 65, 60, 179, 12000, 0);
+    if (!trace_go_to_tag("TAG A3", 65, 60, 179, 12000, 0))
+        return route_fail("A3 TAG FAIL");
     SetWaitForTime(1);
+    return 1;
 }
 
-static void run_baseline_stage_3(void)
+static char run_baseline_stage_3(void)
 {
     SetDisplayString(7, "STAGE 3", 0xFFE0, 0x0000);
-    go_bmp(30, 7, 1);
+    route_go(30, 7, 1);
     SetWaitForTime(0.2);
 
     kinematic(0, 200, 100, 1200);
@@ -208,24 +248,25 @@ static void run_baseline_stage_3(void)
 
     kinematic(0, 180, 180, 1000);
     SetWaitForTime(0.2);
+    return 1;
 }
 
-static void run_baseline_stage_4(void)
+static char run_baseline_stage_4(void)
 {
     SetDisplayString(7, "STAGE 4", 0xFFE0, 0x0000);
-    go_bmp(40, 2, 3);
+    route_go(40, 2, 3);
     SetWaitForTime(0.2);
-    go_bmp(60, 80, 2);
+    route_go(60, 80, 2);
     SetWaitForTime(0.2);
-    go_bmp(40, 16, 1);
+    route_go(40, 16, 1);
     SetWaitForTime(0.2);
-    go_bmp(60, 30, 2);
+    route_go(60, 30, 2);
     SetWaitForTime(0.2);
-    go_bmp(60, 11, 3);
+    route_go(60, 11, 3);
     SetWaitForTime(1);
-    go_bmp(60, 10, 3);
+    route_go(60, 10, 3);
     SetWaitForTime(0.2);
-    go_bmp(60, 20, 2);
+    route_go(60, 20, 2);
     SetWaitForTime(0.2);
 
     kinematic(0, 150, 50, 1000);
@@ -235,23 +276,27 @@ static void run_baseline_stage_4(void)
     paw_control(ROBOT_PAW_GRIP, 1200);
     SetWaitForTime(1);
     kinematic(0, 230, 270, 1000);
-    go_bmp(60, 35, 3);
+    route_go(60, 35, 3);
     SetWaitForTime(0.3);
-    go_bmp(60, 20, 1);
+    route_go(60, 20, 1);
     SetWaitForTime(1);
     kinematic(0, 320, 180, 1000);
     SetWaitForTime(1);
     paw_control(ROBOT_PAW_OPEN, 1000);
     SetWaitForTime(1);
-    go_bmp(-60, 15, 1);
+    route_go(-60, 15, 1);
     kinematic(0, 150, 50, 1000);
+    return 1;
 }
 
 static void run_baseline_route(void)
 {
-    run_baseline_stage_1();
-    run_baseline_stage_2();
-    run_baseline_stage_3();
+    if (!run_baseline_stage_1())
+        return;
+    if (!run_baseline_stage_2())
+        return;
+    if (!run_baseline_stage_3())
+        return;
     run_baseline_stage_4();
 }
 
