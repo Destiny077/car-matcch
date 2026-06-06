@@ -118,7 +118,7 @@ void control_interface(void)
     
     // ========== 标注其他按钮 ==========
     LCD_String(20 + 12, 240 + 22, "APPLY", WHITE, BLUE, 0);
-    LCD_String(176, 300, "RIGHT=RUN", WHITE, BLACK, 0);
+    LCD_String(176, 300, "R=RUN", WHITE, BLACK, 0);
     
     // ========== 显示坐标标签 ==========
     LCD_String(0, 20, "X:", WHITE, BLACK, 0);
