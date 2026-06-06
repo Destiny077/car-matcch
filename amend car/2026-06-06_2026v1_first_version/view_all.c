@@ -107,18 +107,18 @@ void control_interface(void)
     SetLCDFilledRectangle(20, 240, 100, 300, BLUE);       // 更新按钮
     
     // ========== 标注方向按钮 ==========
-    LCD_String(50 + 17, 50 + 17, "前", BLACK, YELLOW, 0);
-    LCD_String(50 + 17, 150 + 17, "后", BLACK, YELLOW, 0);
-    LCD_String(0 + 17, 100 + 17, "左", BLACK, YELLOW, 0);
-    LCD_String(100 + 17, 100 + 17, "右", BLACK, YELLOW, 0);
+    LCD_String(50 + 10, 50 + 17, "FWD", BLACK, YELLOW, 0);
+    LCD_String(50 + 8, 150 + 17, "BACK", BLACK, YELLOW, 0);
+    LCD_String(0 + 17, 100 + 17, "L", BLACK, YELLOW, 0);
+    LCD_String(100 + 17, 100 + 17, "R", BLACK, YELLOW, 0);
     
     // ========== 标注垂直按钮 ==========
-    LCD_String(180 + 17, 50 + 17, "上", BLACK, GREEN, 0);
-    LCD_String(180 + 17, 150 + 17, "下", BLACK, GREEN, 0);
+    LCD_String(180 + 10, 50 + 17, "UP", BLACK, GREEN, 0);
+    LCD_String(180 + 10, 150 + 17, "DN", BLACK, GREEN, 0);
     
     // ========== 标注其他按钮 ==========
-    LCD_String(20 + 24, 240 + 22, "更新", WHITE, BLUE, 0);
-    LCD_String(176, 300, "右键开始", WHITE, BLACK, 0);
+    LCD_String(20 + 12, 240 + 22, "APPLY", WHITE, BLUE, 0);
+    LCD_String(176, 300, "RIGHT=RUN", WHITE, BLACK, 0);
     
     // ========== 显示坐标标签 ==========
     LCD_String(0, 20, "X:", WHITE, BLACK, 0);

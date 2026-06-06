@@ -78,12 +78,25 @@ static void load_navigation_pid(void)
 
 static void prepare_mechanism(void)
 {
+    SetDisplayString(7, "ARM PREP", 0xFFE0, 0x0000);
     kinematic(0, 120, 30, 1000);
     paw_control(ROBOT_PAW_OPEN, 1000);
 }
 
+static char trace_go_to_tag(const char *stage, double targetX, double targetY, double targetA, unsigned long timeout_ms, char catch_type)
+{
+    char ok = 0;
+
+    SetDisplayString(7, stage, 0xFFE0, 0x0000);
+    ok = go_to_tag(targetX, targetY, targetA, timeout_ms, catch_type);
+    SetDisplayString(8, ok ? "TAG OK" : "TAG FAIL", ok ? 0x07E0 : 0xF800, 0x0000);
+
+    return ok;
+}
+
 static void run_baseline_stage_1(void)
 {
+    SetDisplayString(7, "STAGE 1", 0xFFE0, 0x0000);
     go_bmp(-40, 53, 2);
     SetWaitForTime(0.2);
 
@@ -93,7 +106,7 @@ static void run_baseline_stage_1(void)
     go_bmp(40, 1.5, 1);
     SetWaitForTime(0.2);
 
-    go_to_tag(180, 100, 0, 12000, 0);
+    trace_go_to_tag("TAG A1", 180, 100, 0, 12000, 0);
     SetWaitForTime(0.5);
 
     go_bmp(30, 7, 1);
@@ -118,6 +131,7 @@ static void run_baseline_stage_1(void)
 
 static void run_baseline_stage_2(void)
 {
+    SetDisplayString(7, "STAGE 2", 0xFFE0, 0x0000);
     go_bmp(-40, 68, 2);
     SetWaitForTime(0.2);
     go_bmp(40, 39, 1);
@@ -127,7 +141,7 @@ static void run_baseline_stage_2(void)
     go_bmp(-30, 6, 1);
     SetWaitForTime(0.2);
 
-    go_to_tag(210, 80, 358, 12000, 0);
+    trace_go_to_tag("TAG A2", 210, 80, 358, 12000, 0);
     SetWaitForTime(0.2);
 
     go_bmp(30, 5, 1);
@@ -161,12 +175,13 @@ static void run_baseline_stage_2(void)
     go_bmp(-30, 10, 1);
     SetWaitForTime(1);
 
-    go_to_tag(65, 60, 179, 12000, 0);
+    trace_go_to_tag("TAG A3", 65, 60, 179, 12000, 0);
     SetWaitForTime(1);
 }
 
 static void run_baseline_stage_3(void)
 {
+    SetDisplayString(7, "STAGE 3", 0xFFE0, 0x0000);
     go_bmp(30, 7, 1);
     SetWaitForTime(0.2);
 
@@ -197,6 +212,7 @@ static void run_baseline_stage_3(void)
 
 static void run_baseline_stage_4(void)
 {
+    SetDisplayString(7, "STAGE 4", 0xFFE0, 0x0000);
     go_bmp(40, 2, 3);
     SetWaitForTime(0.2);
     go_bmp(60, 80, 2);
@@ -213,7 +229,7 @@ static void run_baseline_stage_4(void)
     SetWaitForTime(0.2);
 
     kinematic(0, 150, 50, 1000);
-    go_to_tag(180, 100, 0, 15000, 1);
+    trace_go_to_tag("TAG END", 180, 100, 0, 15000, 1);
 
     kinematic(0, 230, -10, 1000);
     paw_control(ROBOT_PAW_GRIP, 1200);
