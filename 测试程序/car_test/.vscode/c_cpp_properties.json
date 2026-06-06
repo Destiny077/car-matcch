@@ -1,0 +1,20 @@
+{
+    "configurations": [
+        {
+            "name": "ARM-GCC",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/compiler/includeRTOSE7/**"
+            ],
+            "defines": [
+                "__GNUC__",
+                "__cplusplus"
+            ],
+            "compilerPath": "${workspaceFolder}/compiler/ARM_v7/bin/arm-none-eabi-gcc.exe",
+            "cStandard": "gnu11",
+            "cppStandard": "gnu++14",
+            "intelliSenseMode": "windows-gcc-arm"
+        }
+    ],
+    "version": 4
+}

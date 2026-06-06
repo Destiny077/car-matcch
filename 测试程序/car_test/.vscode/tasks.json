@@ -1,0 +1,23 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build with batch file",
+            "type": "shell",
+            // 确保在项目根目录下执行
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "command": "${workspaceFolder}/build.bat",
+            "args": [
+                // 传给脚本当前编辑文件的绝对路径（比如 E:\test\2026v1\main.c）
+                "${workspaceFolder}/car_test.c"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$gcc"]
+        }
+    ]
+}

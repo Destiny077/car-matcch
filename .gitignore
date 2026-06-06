@@ -1,0 +1,17 @@
+# ARM 交叉编译工具链（单独存放，不要上传）
+compiler/
+
+# 编译产物
+*.o
+*.elf
+*.bin
+*.map
+*.a
+
+# Windows 系统文件
+cmd.exe
+
+# 编辑器临时文件
+*.swp
+*.swo
+*~

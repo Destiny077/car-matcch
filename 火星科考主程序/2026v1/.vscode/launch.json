@@ -1,0 +1,13 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "ARM Build & Download",
+            // 💡 使用 extensionHost 类型：这是 VS Code 自身运行的环境，100% 原生自带，无任何环境依赖
+            "type": "node", 
+            "request": "launch",
+            // 核心目的：只为了在启动时拦截并执行你的 tasks.json 编译任务
+            "preLaunchTask": "Build with batch file"
+        }
+    ]
+}
