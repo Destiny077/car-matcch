@@ -26,6 +26,7 @@
 - GitHub 仓库内的 `amend car` 继续保留，作为版本管理和远端备份来源。
 - VSCode 中不要选择 `C++ GDB` 去调试 `a.exe`；本工程是嵌入式固件，优先使用 `Ctrl+Shift+B` 或默认构建任务生成并下载 `.bin`。
 - 若构建时报 `arm-none-eabi-gcc.exe` 不是内部或外部命令，需要确认当前版本工程目录下存在 `compiler\ARM_v7\bin\arm-none-eabi-gcc.exe` 和 `compiler\includeRTOSE7`。
+- `build.bat` 必须对包含空格的路径加引号；`D:\amend car` 这类路径不能直接裸传给 GCC。
 
 ## 比赛规则摘要
 
