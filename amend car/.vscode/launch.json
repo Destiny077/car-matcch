@@ -5,7 +5,7 @@
             "name": "Build firmware and download to E7-RCU",
             "type": "node-terminal",
             "request": "launch",
-            "preLaunchTask": "Build with batch file",
+            "preLaunchTask": "Build and download 2026v1",
             "command": "echo Firmware build task finished. This project does not run as a PC exe."
         }
     ]

@@ -1,0 +1,23 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build and download 2026v1",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}/2026-06-06_2026v1_first_version"
+            },
+            "command": "${workspaceFolder}/2026-06-06_2026v1_first_version/build.bat",
+            "args": [
+                "${workspaceFolder}/2026-06-06_2026v1_first_version/2026v1.c"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        }
+    ]
+}
