@@ -1,0 +1,36 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build with batch file",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            // 💡 核心修改：这里使用 cmd /c start 来强制弹出一个独立的外部新窗口
+            "command": "cmd",
+            "args": [
+                "/c",
+                "start",
+                "ARM Build Terminal", // 弹出窗口的标题
+                "/wait",                 // 等待弹出的窗口执行完毕，再交还给 VS Code
+                "${workspaceFolder}/build.bat",
+                "${workspaceFolder}/2026v1.c" 
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            // 💡 优化显示：告诉 VS Code 原生底部的终端不要乱滚出来
+            "presentation": {
+                "echo": false,
+                "reveal": "never", // 从不展示 VS Code 自带的底部终端
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": false
+            },
+            "problemMatcher": ["$gcc"]
+        }
+    ]
+}
