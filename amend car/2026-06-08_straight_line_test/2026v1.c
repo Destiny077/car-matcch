@@ -24,7 +24,8 @@
 #include "HardwareInfo.c"
 #include "settingRobot.c"
 
-#define TEST_LEFT_SPEED 11
+#define TEST_LEFT_SPEED_HIGH 12
+#define TEST_LEFT_SPEED_LOW 11
 #define TEST_RIGHT_SPEED 12
 #define TEST_RUN_TIME_MS 5000
 #define TEST_SAMPLE_PERIOD_SEC 0.05
@@ -84,13 +85,19 @@ static void run_straight_test(void)
     show_motor_codes();
 
     start_time = GetSysTime();
-    SetMotorConstSpeed(_M1_, TEST_LEFT_SPEED);
     SetMotorConstSpeed(_M2_, TEST_RIGHT_SPEED);
-    SetMotorConstSpeed(_M3_, TEST_LEFT_SPEED);
     SetMotorConstSpeed(_M4_, TEST_RIGHT_SPEED);
 
     while ((GetSysTime() - start_time) < TEST_RUN_TIME_MS)
     {
+        long elapsed_ms = GetSysTime() - start_time;
+        int left_speed = ((elapsed_ms / 100) % 2 == 0) ? TEST_LEFT_SPEED_HIGH : TEST_LEFT_SPEED_LOW;
+
+        SetMotorConstSpeed(_M1_, left_speed);
+        SetMotorConstSpeed(_M3_, left_speed);
+        SetMotorConstSpeed(_M2_, TEST_RIGHT_SPEED);
+        SetMotorConstSpeed(_M4_, TEST_RIGHT_SPEED);
+
         show_motor_codes();
         SetWaitForTime(TEST_SAMPLE_PERIOD_SEC);
     }
