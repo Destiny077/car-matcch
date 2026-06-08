@@ -11,7 +11,8 @@ Expected behavior:
 - Robot initializes only the chassis.
 - No vision task runs.
 - No arm or paw action runs.
-- All four motors run forward at low speed `12` for about `2.5s`.
+- Left motors M1/M3 run forward at speed `11`, right motors M2/M4 run forward at speed `12`, for about `5s`.
+- This version compensates the observed right drift from the first straight test.
 - Then all motors stop.
 - Screen shows encoder values:
   - line 1: M1
